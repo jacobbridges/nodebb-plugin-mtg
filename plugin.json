@@ -5,6 +5,9 @@
     "url": "https://github.com/jacobbridges/nodebb-plugin-mtg.git",
     "library": "./index.js",
     "templates": "templates",
+    "nbbpm": {
+        "compatibility": "^0.8.0"
+    },
     "hooks": [
         { "hook": "action:app.load", "method": "init" },
         { "hook": "filter:post.parse", "method": "parse", "priority": 6 }

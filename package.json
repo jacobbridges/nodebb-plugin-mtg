@@ -1,5 +1,11 @@
 {
   "name": "nodebb-plugin-mtg",
+  "homepage": "https://github.com/jacobbridges/nodebb-plugin-mtg",
+  "url": "https://github.com/jacobbridges/nodebb-plugin-mtg",
+  "repo": {
+    "type": "git",
+    "url": "https://github.com/jacobbridges/nodebb-plugin-mtg.git"
+  },
   "version": "0.2.0",
   "description": "Create links to MtG card images from card names",
   "main": "index.js",
