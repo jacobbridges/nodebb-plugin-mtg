@@ -1,0 +1,11 @@
+{
+  "name": "nodebb-plugin-mtg",
+  "version": "0.2.0",
+  "description": "Create links to MtG card images from card names",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jacob A Bridges",
+  "license": "ISC"
+}

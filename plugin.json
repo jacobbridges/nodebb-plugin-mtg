@@ -1,0 +1,12 @@
+{
+    "id": "nodebb-plugin-mtg",
+    "name": "NodeBB MtG Plugin",
+    "description": "NodeBB Plugin that changes MtG card names into images.",
+    "url": "https://github.com/jacobbridges/nodebb-plugin-mtg.git",
+    "library": "./index.js",
+    "templates": "templates",
+    "hooks": [
+        { "hook": "action:app.load", "method": "init" },
+        { "hook": "filter:post.parse", "method": "parse", "priority": 6 }
+    ]
+}
