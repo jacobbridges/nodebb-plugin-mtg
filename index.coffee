@@ -11,7 +11,7 @@ cache = module.parent.require('lru-cache')({
 })
 
 ## HTML template
-template = '<a href="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=_IMG_&type=card" title="" class="plugin-mtg-a strip">_NAME_</a>'
+template = '<a href="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=_IMG_&amp;type=card" title="" class="plugin-mtg-a strip">_NAME_</a>'
 
 ## Regex for [mtg][/mtg] custom bbcode
 Mtg.regex = /\[mtg\][A-Za-z0-9\&\#;'",.\(\)\[\]\s]+\[\/mtg\]/gm

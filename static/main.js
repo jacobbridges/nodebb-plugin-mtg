@@ -1,9 +1,34 @@
 (function() {
 	"use strict";
 
+	var shadyHTML = '<div id="shady"></div>'
+
+	var lightboxy = {
+	  init: function() {
+	    if($('#shady').length) return null;
+	    $('body').append(shadyHTML);
+	    $('#shady').hide();
+	  },
+	  show: function(imgURL) {
+	    $('#shady').append("<img class=\"lightboxy-pic\" src=\""+imgURL+"\" />");
+	    $('#shady').css('z-index', 1031).show();
+	    $("[src=\""+imgURL+"\"]").css('z-index', 1032).show();
+	    return $('#shady');
+	  },
+	  hide: function() {
+	    $('#shady').hide().empty();
+	  }
+	}
+
 	jQuery('document').ready(function() {
-		require(['/plugins/nodebb-plugin-mtg/js/strip.min.js'], function (Strip) {
-		});
+		lightboxy.init();
+	  $('a.plugin-mtg-a').click(function(e) {
+	    e.preventDefault();
+	    lightboxy.show($(this).attr('href'))
+	      .click(function() {
+	        lightboxy.hide();
+	      });
+	  });
 	});
 
 }());
