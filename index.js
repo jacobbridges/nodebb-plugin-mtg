@@ -17,7 +17,7 @@
 
   template = '<a href="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=_IMG_&amp;type=card" title="" class="plugin-mtg-a strip">_NAME_</a>';
 
-  Mtg.regex = /\[mtg\][A-Za-z0-9\&\#;'",.\(\)\[\]\s]+\[\/mtg\]/gm;
+  Mtg.regex = /\[mtg\][A-Za-z0-9\&\#\-;'",.\(\)\[\]\s]+\[\/mtg\]/gm;
 
   Mtg.clean = function(input, isMarkdown, stripBlockquote, stripCode) {
     var bqMatch, pfMatch;
@@ -36,7 +36,6 @@
   };
 
   Mtg.parsePost = function(data, callback) {
-    console.log('In parsePost!');
     if (!_.get(data, 'postData.content')) {
       return callback(null, data);
     }
@@ -51,7 +50,6 @@
 
   Mtg.parseRaw = function(content, callback) {
     var cardNames, cleanedContent, matches;
-    console.log('In parseRaw!');
     cleanedContent = Mtg.clean(content, false, false, true);
     matches = cleanedContent.match(Mtg.regex);
     if (!matches) {
@@ -62,27 +60,21 @@
       if (cache.has(cardName)) {
         next(null, cache.get(cardName));
       } else {
-        console.log(cardName + " does not exist in cache, getting card..");
+
       }
       return getCard(cardName, function(err, cardObj) {
         if (err) {
           return next(err);
         }
-        console.log("Retrieved " + cardName + "! Adding card to cache..");
-        console.log("Card obj", cardObj);
         cache.set(cardName, cardObj);
         return next(err, cardObj);
       });
     }), (function(err, cards) {
-      var card, i, j, k, len, len1;
+      var card, i, j, len;
       if (err) {
         return callback(err, content);
       }
       for (i = j = 0, len = cards.length; j < len; i = ++j) {
-        card = cards[i];
-        console.log("Replacing " + cardNames[i] + " with " + card.Name);
-      }
-      for (i = k = 0, len1 = cards.length; k < len1; i = ++k) {
         card = cards[i];
         content = content.replace(cardNames[i], template.replace(/_IMG_/g, card.ID).replace(/_NAME_/, card.Name));
       }
@@ -95,7 +87,6 @@
     mtgCardName = mtgCardName.replace('[mtg]', '');
     mtgCardName = mtgCardName.replace('[/mtg]', '');
     mtgCardName = mtgCardName.replace('&#39;', "'");
-    console.log('Getting MtG card', mtgCardName);
     uriSafeCardName = encodeURIComponent(mtgCardName);
     return request.get({
       url: "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx?nameFragment=" + uriSafeCardName
