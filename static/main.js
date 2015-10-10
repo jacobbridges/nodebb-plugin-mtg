@@ -17,17 +17,21 @@
 	  },
 	  hide: function() {
 	    $('#shady').hide().empty();
-	  }
-	}
-
-	$(window).on('action:ajaxify.end', function() {
-		lightboxy.init();
-	  $('.plugin-mtg-a').click(function() {
+	  },
+	  addListener: function() {
+	  	lightboxy.init();
+	  	$('.plugin-mtg-a').click(function() {
 	    lightboxy.show($(this).attr('data-cardurl'))
 	      .click(function() {
 	        lightboxy.hide();
 	      });
-	  });
-	})
+	  	});
+	  }
+	}
+
+	$(window).on('action:ajaxify.end', lightboxy.addListener);
+	$(window).on('action:ajaxify.dataLoaded', lightboxy.addListener);
+	$(window).on('action:ajaxify.contentLoaded', lightboxy.addListener);
+	// $(window).on('action:post.edit', lightboxy.addListener());
 
 }());

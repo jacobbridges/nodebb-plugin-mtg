@@ -5,7 +5,17 @@
 }
 .plugin-mtg-a:hover {
   cursor: pointer;
-  color: lighten(@state-info-text, 15%);
+  color: lighten(@state-info-text, 10%);
+}
+
+.plugin-mtg-a-broken {
+  color: @state-danger-text;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+.plugin-mtg-a-broken:hover {
+  cursor: pointer;
+  color: lighten(@state-danger-text, 10%);
 }
 
 #shady {

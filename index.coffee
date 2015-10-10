@@ -11,7 +11,8 @@ cache = module.parent.require('lru-cache')({
 })
 
 ## HTML template
-template = '<span data-cardurl="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=_IMG_&amp;type=card" class="plugin-mtg-a">_NAME_</a>'
+template = '<span data-cardurl="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=_IMG_&amp;type=card" class="plugin-mtg-a">_NAME_</span>'
+templateBroken = '<span class="plugin-mtg-a-broken">_NAME_</span>'
 
 ## Regex for [mtg][/mtg] custom bbcode
 Mtg.regex = /\[mtg\][A-Za-z0-9\&\#\-;'",.\(\)\[\]\s]+\[\/mtg\]/gm
@@ -42,17 +43,22 @@ Mtg.parseRaw = (content, callback) ->
 	return callback null, content unless matches
 	cardNames = _.uniq matches
 	async.map cardNames, ((cardName, next) -> 
-		if cache.has cardName
-    	next null, cache.get(cardName)
-    else
-			getCard cardName, (err, cardObj) ->
-        return next err if err
-        cache.set cardName, cardObj
-        next err, cardObj
+		return next null, cache.get(cardName) if cache.has cardName
+		getCard cardName, (err, cardObj) ->
+      return next err if err
+      cache.set cardName, cardObj
+      return next err, cardObj
   ), ((err, cards) ->
-  	return callback err, content if err
-  	content = content.replace(cardNames[i], template.replace(/_IMG_/g, card.ID).replace(/_NAME_/, card.Name)) for card, i in cards 
-  	callback err, content)
+  	if err
+      return callback err, content 
+    for card, i in cards
+      content = Mtg.render content, cardNames, card, i
+    callback err, content)
+
+## Function to replace test with template
+Mtg.render = (content, cardNames, card, i) ->
+  return content.replace(cardNames[i], template.replace(/_IMG_/g, card.ID).replace(/_NAME_/, card.Name)) if card
+  return content.replace(cardNames[i], templateBroken.replace(/_NAME_/, cardNames[i].replace('[mtg]', '').replace('[/mtg]', '')))
 
 ## Function to retrieve a magic the gathering card
 getCard = (mtgCardName, callback) -> 
@@ -61,7 +67,7 @@ getCard = (mtgCardName, callback) ->
   mtgCardName = mtgCardName.replace('&#39;', "'")
   uriSafeCardName = encodeURIComponent mtgCardName 
   request.get {url: "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx?nameFragment=#{ uriSafeCardName }"}, (err, response, body) ->
-  	if response.statusCode is 200 then responseData = JSON.parse body else callback err
-  	if _.get(responseData, 'Results.length') then callback null, responseData.Results[0] else callback err
+  	if response.statusCode is 200 then responseData = JSON.parse body else return callback err
+  	if _.get(responseData, 'Results.length') then callback null, responseData.Results[0] else return callback err
 
 module.exports = Mtg
