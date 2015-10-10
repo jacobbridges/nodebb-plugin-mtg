@@ -22,9 +22,8 @@
 
 	$(window).on('action:ajaxify.end', function() {
 		lightboxy.init();
-	  $('a.plugin-mtg-a').click(function(e) {
-	    e.preventDefault();
-	    lightboxy.show($(this).attr('href'))
+	  $('.plugin-mtg-a').click(function() {
+	    lightboxy.show($(this).attr('data-cardurl'))
 	      .click(function() {
 	        lightboxy.hide();
 	      });

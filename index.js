@@ -15,7 +15,7 @@
     max: 100
   });
 
-  template = '<a href="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=_IMG_&amp;type=card" title="" class="plugin-mtg-a strip">_NAME_</a>';
+  template = '<span data-cardurl="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=_IMG_&amp;type=card" class="plugin-mtg-a">_NAME_</a>';
 
   Mtg.regex = /\[mtg\][A-Za-z0-9\&\#\-;'",.\(\)\[\]\s]+\[\/mtg\]/gm;
 
