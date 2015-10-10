@@ -20,17 +20,15 @@
 	  }
 	}
 
-	$(document).ready(function() {
-		$(window).on('action:ajaxify.end', function() {
-			lightboxy.init();
-		  $('a.plugin-mtg-a').click(function(e) {
-		    e.preventDefault();
-		    lightboxy.show($(this).attr('href'))
-		      .click(function() {
-		        lightboxy.hide();
-		      });
-		  });
-		})
-	});
+	$(window).on('action:ajaxify.end', function() {
+		lightboxy.init();
+	  $('a.plugin-mtg-a').click(function(e) {
+	    e.preventDefault();
+	    lightboxy.show($(this).attr('href'))
+	      .click(function() {
+	        lightboxy.hide();
+	      });
+	  });
+	})
 
 }());
